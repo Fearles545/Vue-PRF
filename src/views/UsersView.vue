@@ -1,95 +1,153 @@
 <script setup lang="ts">
-import { useStore } from '@/composables/useStore'
 import { ref } from 'vue'
+import { useStore } from '@/composables/useStore'
+import UserDialog from '@/components/UserDialog.vue'
+import type { User } from '../models/core'
 
-const {
-  state,
-  addUser,
-  removeUser,
-  addAssignment,
-  removeAssignment,
-  getUsers,
-  getAssignments,
-  getAssignmentsByUser
-} = useStore()
+const { getUsers, addUser, updateUser, removeUser } = useStore()
 
-const userName = ref('')
-const email = ref('')
-const dialog = ref<HTMLElement | null>(null)
+const selectedUser = ref<User | null>(null)
+const isUserDialogVisible = ref(false)
 
-const cancelAddUser = () => {
-  userName.value = ''
-  email.value = ''
-  dialog.value?.hidePopover()
+const showAddUserDialog = () => {
+  selectedUser.value = null
+  isUserDialogVisible.value = true
+}
+
+const editUser = (user: User) => {
+  selectedUser.value = user
+  isUserDialogVisible.value = true
+}
+
+const handleUserDialogSubmit = (userData: User) => {
+  if (selectedUser.value) {
+    updateUser(userData)
+  } else {
+    addUser(userData)
+  }
+  isUserDialogVisible.value = false
+}
+
+const handleUserDialogCancel = () => {
+  isUserDialogVisible.value = false
 }
 </script>
 
 <template>
   <section>
-    <h2>Users</h2>
+    <div v-if="getUsers.length === 0">
+      <p>There's no users yet.</p>
+    </div>
 
-    <p>Here you can find all your users.</p>
+    <section v-else>
+      <h2 class="user-list-title">List of Users</h2>
+      <div class="user-list-container">
+        <ul class="user-list">
+          <li v-for="user in getUsers" :key="user.id" class="user-item">
+            <h3>{{ user.name }}</h3>
+            <p>{{ user.email }}</p>
+            <div class="user-item-actions">
+              <button @click="editUser(user)" class="btn">Edit</button>
+              <button class="btn btn-cancel" @click="removeUser(user.id)">Remove</button>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
 
-    <button class="btn" popovertarget="addUser">Add User</button>
+    <div class="btn-container">
+      <button class="btn" @click="showAddUserDialog">Add User</button>
+    </div>
 
-    <dialog popover id="addUser" ref="dialog">
-      <form class="add-user-form" @submit.prevent>
-        <h3 class="form-title">Add new user</h3>
-
-        <input v-model="userName" type="text" placeholder="Name" />
-
-        <input v-model="email" type="text" placeholder="Email" />
-
-        <div class="buttons-container">
-          <button @click="cancelAddUser()">Cancel</button>
-
-          <button @click="addUser({ id: 1, name: userName, email })">Add</button>
-        </div>
-      </form>
-    </dialog>
+    <UserDialog
+      class="user-dialog"
+      :user="selectedUser"
+      :visible="isUserDialogVisible"
+      @submit="handleUserDialogSubmit"
+      @cancel="handleUserDialogCancel"
+    />
   </section>
 </template>
 
-<script setup lang="ts"></script>
-
 <style scoped>
-#addUser {
-  background-color: #34495e;
+.user-dialog {
+  background-color: #2f5634;
   width: fit-content;
   height: fit-content;
+  border-radius: 1rem;
+  border-color: #00bd7e;
   margin: auto;
+  padding: 2rem;
 }
 
-#addUser::backdrop {
+.user-dialog::backdrop {
   background-color: rgba(0, 0, 0, 0.5);
   filter: blur(1px);
 }
 
-.add-user-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
-}
-
-.form-title {
-  text-align: center;
-  font-size: 1.5rem;
-}
-
-.buttons-container {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-  width: 100%;
-}
-
 .btn {
-  background-color: #3498db;
-  color: white;
+  background-color: #266b43;
+  color: #00bd7e;
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  border: 1px solid #00bd7e;
+}
+
+.btn-cancel {
+  background-color: #e74c3c;
+}
+
+.user-list-container {
+  background-color: #2f5634;
+  border: 1px solid #00bd7e;
+  border-radius: 5px;
+  padding: 0.5rem;
+  height: 70vh;
+  overflow: auto;
+}
+
+.user-list-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #00bd7e;
+  margin-bottom: 1rem;
+}
+
+.user-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0;
+}
+
+.user-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2f5634;
+  border: 1px solid #00bd7e;
+  border-radius: 5px;
+  padding: 1rem;
+}
+
+.user-item-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.btn-container .btn {
+  font-size: 1.5rem;
+  font-weight: 700;
+  width: 100%;
+  height: 3rem;
 }
 </style>
