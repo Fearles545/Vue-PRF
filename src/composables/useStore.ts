@@ -57,39 +57,58 @@ const state = reactive({
   assignments: [
     {
       id: 1,
-      userId: 1,
-      title: 'Assignment 1',
-      description: 'This is the first assignment'
+      name: 'Assignment 1',
+      title: 'Math Homework',
+      description: 'Complete the algebra problems.',
+      user: {
+        id: 9,
+        name: 'Ian Curtis',
+        email: 'ian.curtis@example.com'
+      }
     },
     {
       id: 2,
-      userId: 1,
-      title: 'Assignment 2',
-      description: 'This is the second assignment'
+      name: 'Assignment 2',
+      title: 'Science Project',
+      description: 'Build a model of the solar system.',
+      user: {
+        id: 6,
+        name: 'Fiona Gallagher',
+        email: 'fiona.gallagher@example.com'
+      }
     },
     {
       id: 3,
-      userId: 2,
-      title: 'Assignment 3',
-      description: 'This is the third assignment'
+      name: 'Assignment 3',
+      title: 'History Essay',
+      description: 'Write an essay on World War II.',
+      user: {
+        id: 3,
+        name: 'Charlie Brown',
+        email: 'charlie.brown@example.com'
+      }
     },
     {
       id: 4,
-      userId: 3,
-      title: 'Assignment 4',
-      description: 'This is the fourth assignment'
+      name: 'Assignment 4',
+      title: 'Art Assignment',
+      description: 'Create a painting of a landscape.',
+      user: {
+        id: 4,
+        name: 'Diana Prince',
+        email: 'diana.prince@example.com'
+      }
     },
     {
       id: 5,
-      userId: 4,
-      title: 'Assignment 5',
-      description: 'This is the fifth assignment'
-    },
-    {
-      id: 6,
-      userId: 5,
-      title: 'Assignment 6',
-      description: 'This is the sixth assignment'
+      name: 'Assignment 5',
+      title: 'Literature Review',
+      description: 'Read and review "To Kill a Mockingbird".',
+      user: {
+        id: 6,
+        name: 'Fiona Gallagher',
+        email: 'fiona.gallagher@example.com'
+      }
     }
   ] as Assignment[]
 })
@@ -111,8 +130,16 @@ const updateUser = (updatedUser: User) => {
   )
 }
 
-const addAssignment = (assignment: Assignment) => {
+const addAssignment = (data: Partial<Assignment>) => {
+  data.id = state.assignments.length + 1
+  const assignment = data as Assignment
   state.assignments = [...state.assignments, assignment]
+}
+
+const updateAssignment = (updatedAssignment: Assignment) => {
+  state.assignments = state.assignments.map((assignment) =>
+    assignment.id === updatedAssignment.id ? { ...assignment, ...updatedAssignment } : assignment
+  )
 }
 
 const removeAssignment = (assignmentId: number) => {
@@ -120,9 +147,8 @@ const removeAssignment = (assignmentId: number) => {
 }
 
 const getUsers = computed(() => state.users)
+
 const getAssignments = computed(() => state.assignments)
-const getAssignmentsByUser = (userId: number) =>
-  computed(() => state.assignments.filter((assignment) => assignment.userId === userId))
 
 export function useStore() {
   return {
@@ -131,9 +157,9 @@ export function useStore() {
     removeUser,
     updateUser,
     addAssignment,
+    updateAssignment,
     removeAssignment,
     getUsers,
-    getAssignments,
-    getAssignmentsByUser
+    getAssignments
   }
 }

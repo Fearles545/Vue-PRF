@@ -41,13 +41,17 @@ const handleUserDialogCancel = () => {
 
     <section v-else>
       <h2 class="user-list-title">List of Users</h2>
+
       <div class="user-list-container">
         <ul class="user-list">
           <li v-for="user in getUsers" :key="user.id" class="user-item">
             <h3>{{ user.name }}</h3>
+
             <p>{{ user.email }}</p>
+
             <div class="user-item-actions">
               <button @click="editUser(user)" class="btn">Edit</button>
+
               <button class="btn btn-cancel" @click="removeUser(user.id)">Remove</button>
             </div>
           </li>

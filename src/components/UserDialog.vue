@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineProps, defineEmits, watch, onMounted } from 'vue'
+import { ref, defineProps, defineEmits, watch } from 'vue'
 
 const props = defineProps({
   user: {
@@ -59,9 +59,19 @@ const handleCancel = () => {
     <form class="user-form" @submit.prevent="handleSubmit">
       <h3 class="form-title">{{ isEditMode ? 'Edit User' : 'Add New User' }}</h3>
 
-      <input v-model="name" type="text" placeholder="Name" />
+      <div class="form-inputs-container">
+        <div class="form-group">
+          <label for="name">Name</label>
 
-      <input v-model="email" type="text" placeholder="Email" />
+          <input v-model="name" type="text" id="name" placeholder="ex: John Doe" />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+
+          <input v-model="email" type="text" id="email" placeholder="ex: john@doe.com" />
+        </div>
+      </div>
 
       <div class="buttons-container">
         <button class="btn" type="submit">{{ isEditMode ? 'Save' : 'Add' }}</button>
@@ -89,20 +99,37 @@ const handleCancel = () => {
 
 .user-form input::placeholder {
   font-weight: 500;
-  color: #00bd7e;
+  color: #00bd7e83;
 }
 
 .user-form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
+  gap: 3rem;
 }
 
 .form-title {
   text-align: center;
   font-size: 1.5rem;
   font-weight: 500;
+  color: #00bd7e;
+}
+
+.form-inputs-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 1rem;
+  font-weight: 700;
   color: #00bd7e;
 }
 

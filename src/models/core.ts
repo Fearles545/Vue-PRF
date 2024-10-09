@@ -9,6 +9,5 @@ export interface Assignment {
   name: string
   title: string
   description: string
-  dueDate: Date
-  userId: number
+  user: User
 }
