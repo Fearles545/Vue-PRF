@@ -6,10 +6,6 @@
       </li>
 
       <li>
-        <RouterLink to="/about" class="router-link" activeClass="active-link">About</RouterLink>
-      </li>
-
-      <li>
         <RouterLink to="/assignments" class="router-link" activeClass="active-link">
           Assignments
         </RouterLink>

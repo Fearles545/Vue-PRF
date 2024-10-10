@@ -13,7 +13,7 @@
         <div class="form-group">
           <label for="description">Description</label>
 
-          <input v-model="description" type="text" id="description" placeholder="Description" />
+          <textarea v-model="description" type="text" id="description"></textarea>
         </div>
 
         <div class="form-group">
@@ -24,11 +24,10 @@
           </select>
         </div>
       </div>
-
       <div class="buttons-container">
-        <button class="btn" type="submit">{{ isEditMode ? 'Save' : 'Add' }}</button>
-
         <button class="btn btn-cancel" @click="handleCancel">Cancel</button>
+
+        <button class="btn" type="submit">{{ isEditMode ? 'Save' : 'Add' }}</button>
       </div>
     </form>
   </dialog>
@@ -37,6 +36,7 @@
 <script setup lang="ts">
 import { ref, defineProps, defineEmits, watch } from 'vue'
 import { useStore } from '@/composables/useStore'
+import type { Assignment } from '@/models/core'
 
 const { getUsers } = useStore()
 
@@ -138,8 +138,13 @@ label {
   margin-bottom: 0.5rem;
 }
 
+textarea {
+  width: 100%;
+}
+
 input,
-select {
+select,
+textarea {
   padding: 0.5rem;
   border-radius: 5px;
   border: 1px solid #00bd7e;
@@ -159,6 +164,7 @@ select {
   padding: 0.5rem 1rem;
   border-radius: 5px;
   cursor: pointer;
+  border: 1px solid #00bd7e;
 }
 
 .btn-cancel {

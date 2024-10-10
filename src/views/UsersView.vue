@@ -91,7 +91,7 @@ const handleUserDialogCancel = () => {
 
 .btn {
   background-color: #266b43;
-  color: #00bd7e;
+  color: #fff;
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 5px;

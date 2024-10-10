@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { User } from '@/models/core'
 import { ref, defineProps, defineEmits, watch } from 'vue'
 
 const props = defineProps({

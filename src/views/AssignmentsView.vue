@@ -35,7 +35,9 @@ const handleAssignmentDialogCancel = () => {
 
 <template>
   <section>
-    <h2>Assignments</h2>
+    <h2 class="section-title">
+      Assignments <button class="btn" @click="showAddAssignmentDialog">Add Assignment</button>
+    </h2>
 
     <p>Here you can find all your assignments.</p>
 
@@ -55,8 +57,6 @@ const handleAssignmentDialogCancel = () => {
           </div>
         </li>
       </ul>
-
-      <button class="btn" @click="showAddAssignmentDialog">Add Assignment</button>
     </div>
 
     <AssignmentDialog
@@ -78,6 +78,7 @@ const handleAssignmentDialogCancel = () => {
   border-color: #00bd7e;
   margin: auto;
   padding: 0;
+  width: 30rem;
 }
 
 .assignment-dialog::backdrop {
@@ -116,7 +117,18 @@ const handleAssignmentDialogCancel = () => {
 }
 
 .assignment-list-container {
+  border: 1px solid #00bd7e;
+  border-radius: 5px;
   margin-top: 2rem;
+  padding: 0.5rem;
+  height: 70vh;
+  overflow: auto;
+}
+
+.section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .btn {
@@ -125,6 +137,7 @@ const handleAssignmentDialogCancel = () => {
   padding: 0.5rem 1rem;
   border-radius: 5px;
   cursor: pointer;
+  border: 1px solid #00bd7e;
 }
 
 .btn-cancel {
@@ -151,8 +164,6 @@ p {
 
 section {
   background-color: #34495e;
-  border: 1px solid #00bd7e;
-  border-radius: 5px;
   padding: 1rem;
 }
 
